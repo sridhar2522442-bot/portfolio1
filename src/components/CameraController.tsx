@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
 import { gsap } from 'gsap';
 import { useStore } from '@/store/useStore';
-
+import * as THREE from 'three';
 // Default isometric view matching the specs
 const DEFAULT_CAMERA_POS = [20, 20, 20];
 const DEFAULT_TARGET_POS = [0, 1, 0];

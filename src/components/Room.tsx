@@ -369,7 +369,7 @@ export default function Room() {
         onPointerOut={(e) => { setHoveredLamp(false); }}
       >
         <mesh castShadow receiveShadow position={[0, 2, 0]}><cylinderGeometry args={[0.05, 0.05, 4]} /><meshStandardMaterial color="#111" /></mesh>
-        <mesh castShadow receiveShadow position={[0, 4.2, 0]}><cylinderGeometry args={[0.4, 0.6, 0.8]} openEnded /><meshStandardMaterial color="#eee" side={THREE.DoubleSide} /></mesh>
+        <mesh castShadow receiveShadow position={[0, 4.2, 0]}><cylinderGeometry args={[0.4, 0.6, 0.8, 32, 1, true]} /><meshStandardMaterial color="#eee" side={THREE.DoubleSide} /></mesh>
         {/* The bulb */}
         <mesh position={[0, 4.2, 0]}>
           <sphereGeometry args={[0.2]} />
