@@ -83,18 +83,18 @@ export default function ContentPanel() {
             exit="exit"
             className={`
               glass-panel pointer-events-auto relative z-50 flex flex-col
-              w-full md:w-[420px] 
-              h-[85vh] md:h-[calc(100vh-3rem)] 
+              w-full md:w-[420px]
+              h-[calc(85vh-64px)] md:h-[calc(100vh-3rem)]
               rounded-t-3xl md:rounded-2xl
               overflow-hidden
             `}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10 shrink-0 bg-black/20">
-              <h2 className="font-sans text-xl uppercase tracking-wider text-text-primary text-neon-green">
+            <div className="flex items-center justify-between p-5 md:p-6 border-b border-white/10 shrink-0 bg-black/20">
+              <h2 className="font-sans text-lg md:text-xl uppercase tracking-wider text-text-primary text-neon-green">
                 {getPanelTitle()}
               </h2>
-              <button 
+              <button
                 onClick={closePanel}
                 className="p-2 rounded-full hover:bg-white/10 transition-colors"
                 aria-label="Close panel"
@@ -103,8 +103,11 @@ export default function ContentPanel() {
               </button>
             </div>
 
-            {/* Content Area */}
-            <div className="p-6 overflow-y-auto flex-1 relative custom-scrollbar">
+            {/* Content Area — touch-scroll optimized */}
+            <div
+              className="p-5 md:p-6 overflow-y-auto flex-1 relative custom-scrollbar"
+              style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' } as any}
+            >
               {getPanelContent()}
             </div>
           </motion.div>

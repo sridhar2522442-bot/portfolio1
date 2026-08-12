@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { detectDeviceTier, type DeviceTier } from '@/lib/deviceDetect';
 
 export type HotspotId = 
   | 'about' 
@@ -20,10 +21,12 @@ interface AppState {
   isDeveloperMode: boolean;
   timeMode: TimeMode;
   isSongPlaying: boolean;
+  deviceTier: DeviceTier;
   setHasEntered: (value: boolean) => void;
   setActiveHotspot: (id: HotspotId) => void;
   setViewMode: (mode: ViewMode) => void;
   setDeveloperMode: (value: boolean) => void;
+  setDeviceTier: (tier: DeviceTier) => void;
   cycleTimeMode: () => void;
   toggleSong: () => void;
 }
@@ -35,10 +38,12 @@ export const useStore = create<AppState>((set) => ({
   isDeveloperMode: false,
   timeMode: 'AUTO',
   isSongPlaying: false,
+  deviceTier: 'high', // will be refined on client mount
   setHasEntered: (value) => set({ hasEntered: value }),
   setActiveHotspot: (id) => set({ activeHotspot: id }),
   setViewMode: (mode) => set({ viewMode: mode }),
   setDeveloperMode: (value) => set({ isDeveloperMode: value }),
+  setDeviceTier: (tier) => set({ deviceTier: tier }),
   cycleTimeMode: () => set((state) => {
     const modes: TimeMode[] = ['AUTO', 'DAY', 'SUNSET', 'NIGHT'];
     const currentIndex = modes.indexOf(state.timeMode);
@@ -47,3 +52,9 @@ export const useStore = create<AppState>((set) => ({
   }),
   toggleSong: () => set((state) => ({ isSongPlaying: !state.isSongPlaying })),
 }));
+
+// Run device detection once on client
+if (typeof window !== 'undefined') {
+  const tier = detectDeviceTier();
+  useStore.getState().setDeviceTier(tier);
+}

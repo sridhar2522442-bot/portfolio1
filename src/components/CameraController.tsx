@@ -1,13 +1,23 @@
-'use client';
+﻿'use client';
 
 import { useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
 import { gsap } from 'gsap';
 import { useStore } from '@/store/useStore';
 import * as THREE from 'three';
-// Default isometric view matching the specs
-const DEFAULT_CAMERA_POS = [20, 20, 20];
-const DEFAULT_TARGET_POS = [0, 1, 0];
+
+// Desktop vs mobile default positions
+function getDefaults(isMobile: boolean) {
+  return {
+    pos: isMobile ? [14, 14, 14] : [20, 20, 20],
+    target: [0, 1, 0],
+    fov: isMobile ? 50 : 45,
+  };
+}
+
+function isMobile() {
+  return typeof window !== 'undefined' && window.innerWidth < 768;
+}
 
 export default function CameraController() {
   const { camera, controls } = useThree();
@@ -19,34 +29,19 @@ export default function CameraController() {
       const animDuration = duration || 1.2;
       const animEase = ease || 'power3.inOut';
 
-      // Animate Camera Position
-      gsap.to(camera.position, {
-        x: position[0],
-        y: position[1],
-        z: position[2],
-        duration: animDuration,
-        ease: animEase
-      });
+      gsap.to(camera.position, { x: position[0], y: position[1], z: position[2], duration: animDuration, ease: animEase });
 
-      // Animate FOV if provided
       if (fov && (camera as THREE.PerspectiveCamera).isPerspectiveCamera) {
         gsap.to(camera as THREE.PerspectiveCamera, {
-          fov: fov,
+          fov,
           duration: animDuration,
           ease: animEase,
           onUpdate: () => (camera as THREE.PerspectiveCamera).updateProjectionMatrix()
         });
       }
 
-      // Animate OrbitControls Target (if controls exist)
       if (controls) {
-        gsap.to((controls as any).target, {
-          x: target[0],
-          y: target[1],
-          z: target[2],
-          duration: animDuration,
-          ease: animEase
-        });
+        gsap.to((controls as any).target, { x: target[0], y: target[1], z: target[2], duration: animDuration, ease: animEase });
       }
     };
 
@@ -54,33 +49,24 @@ export default function CameraController() {
     return () => window.removeEventListener('camera-move', handleMove);
   }, [camera, controls]);
 
-  // Return to default position when activeHotspot is null and viewMode is room
+  // Return to default when no hotspot active
   useEffect(() => {
     if (activeHotspot === null && viewMode === 'room' && controls) {
-      gsap.to(camera.position, {
-        x: DEFAULT_CAMERA_POS[0],
-        y: DEFAULT_CAMERA_POS[1],
-        z: DEFAULT_CAMERA_POS[2],
-        duration: 1.2,
-        ease: 'power3.out'
-      });
+      const mobile = isMobile();
+      const defaults = getDefaults(mobile);
+
+      gsap.to(camera.position, { x: defaults.pos[0], y: defaults.pos[1], z: defaults.pos[2], duration: 1.2, ease: 'power3.out' });
 
       if ((camera as THREE.PerspectiveCamera).isPerspectiveCamera) {
-         gsap.to(camera as THREE.PerspectiveCamera, {
-           fov: 45, // default R3F FOV, or whatever your default is
-           duration: 1.2,
-           ease: 'power3.out',
-           onUpdate: () => (camera as THREE.PerspectiveCamera).updateProjectionMatrix()
-         });
+        gsap.to(camera as THREE.PerspectiveCamera, {
+          fov: defaults.fov,
+          duration: 1.2,
+          ease: 'power3.out',
+          onUpdate: () => (camera as THREE.PerspectiveCamera).updateProjectionMatrix()
+        });
       }
 
-      gsap.to((controls as any).target, {
-        x: DEFAULT_TARGET_POS[0],
-        y: DEFAULT_TARGET_POS[1],
-        z: DEFAULT_TARGET_POS[2],
-        duration: 1.2,
-        ease: 'power3.out'
-      });
+      gsap.to((controls as any).target, { x: defaults.target[0], y: defaults.target[1], z: defaults.target[2], duration: 1.2, ease: 'power3.out' });
     }
   }, [activeHotspot, viewMode, camera, controls]);
 
