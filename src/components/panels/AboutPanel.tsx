@@ -1,20 +1,20 @@
 'use client';
 
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-const container: Variants = {
+const container: any = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } }
 };
 
-const item: Variants = {
+const item: any = {
   hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }
 };
 
-const statItem: Variants = {
+const statItem: any = {
   hidden: { opacity: 0, y: 10, scale: 0.9 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: 'easeOut' as const } }
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: 'easeOut' } }
 };
 
 function Header() {
