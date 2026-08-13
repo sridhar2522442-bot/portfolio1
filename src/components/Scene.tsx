@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Preload } from '@react-three/drei';
@@ -8,6 +8,7 @@ import Room from './Room';
 import CameraController from './CameraController';
 import { useStore } from '@/store/useStore';
 import { type DeviceTier } from '@/lib/deviceDetect';
+import * as THREE from 'three';
 
 // DPR caps per tier
 const DPR_MAP: Record<DeviceTier, [number, number]> = {
@@ -47,7 +48,7 @@ export default function Scene() {
           powerPreference: deviceTier === 'low' ? 'low-power' : 'high-performance',
         }}
         dpr={DPR_MAP[deviceTier]}
-        frameloop={deviceTier === 'low' ? 'demand' : 'always'}
+        frameloop="always"
         performance={{ min: 0.5 }}
       >
         <color attach="background" args={['#0a0a0c']} />
@@ -63,7 +64,7 @@ export default function Scene() {
           minDistance={10}
           maxDistance={25}
           enablePan={false}
-          touches={{ ONE: 1, TWO: 2 } as any}
+          touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN }}
         />
 
         <CameraController />

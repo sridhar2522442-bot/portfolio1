@@ -77,7 +77,7 @@ canvas {
 /* ─────────────────────────────────────────
    Touch tap targets — min 44px
 ───────────────────────────────────────── */
-button {
+button, [role="button"] {
   min-height: 44px;
   min-width: 44px;
 }
