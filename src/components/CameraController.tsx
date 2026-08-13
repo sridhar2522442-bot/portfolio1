@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
@@ -9,9 +9,9 @@ import * as THREE from 'three';
 // Desktop vs mobile default positions
 function getDefaults(isMobile: boolean) {
   return {
-    pos: isMobile ? [14, 14, 14] : [20, 20, 20],
-    target: [0, 1, 0],
-    fov: isMobile ? 50 : 45,
+    pos: isMobile ? [16, 16, 16] : [20, 20, 20],
+    target: isMobile ? [-1.5, 1, 0] : [0, 1, 0],
+    fov: isMobile ? 65 : 45,
   };
 }
 
