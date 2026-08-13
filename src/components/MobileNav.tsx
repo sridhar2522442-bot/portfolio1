@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore, type HotspotId } from '@/store/useStore';
@@ -7,10 +7,7 @@ const NAV_ITEMS: { id: HotspotId; label: string; icon: string; cameraTarget: [nu
   { id: 'about',     label: 'About',     icon: '🖥️', cameraTarget: [0, 3.2, -2.5],      cameraPosition: [0, 3.2, -1.8],    isFullscreen: true },
   { id: 'skills',    label: 'Skills',    icon: '⌨️', cameraTarget: [-0.5, 2.65, -1.2],  cameraPosition: [-0.5, 4, 0.5] },
   { id: 'projects',  label: 'Projects',  icon: '🖱️', cameraTarget: [1.5, 2.65, -1.2],   cameraPosition: [1.5, 4, 0.5] },
-  { id: 'education', label: 'Edu',       icon: '📚', cameraTarget: [-7, 3.5, -8],        cameraPosition: [-7, 4.5, -3] },
   { id: 'contact',   label: 'Contact',   icon: '📱', cameraTarget: [-2.5, 2.65, -1.2],  cameraPosition: [-2.5, 3.5, 0] },
-  { id: 'interests', label: 'Interests', icon: '🎧', cameraTarget: [3.5, 3.5, -2],       cameraPosition: [3.5, 4, -0.5] },
-  { id: 'easter_egg',label: 'Hobbies',   icon: '☕', cameraTarget: [2.5, 2.7, -1.4],     cameraPosition: [2.5, 3.5, -0.5] },
 ];
 
 export default function MobileNav() {
