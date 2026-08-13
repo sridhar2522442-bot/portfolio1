@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useStore, HotspotId } from '@/store/useStore';
 import { gsap } from 'gsap';
@@ -64,6 +65,12 @@ export default function Hotspot({ id, label, position, cameraTarget, cameraPosit
     }
   };
 
+  // Hide labels on mobile by default. Show only when clicked (isActive).
+  // On desktop, show on hover.
+  const labelOpacity = isTouchDevice
+    ? (isActive ? 'opacity-100' : 'opacity-0')
+    : (hovered ? 'opacity-100' : 'opacity-0');
+
   return (
     <group
       position={position}
@@ -75,7 +82,21 @@ export default function Hotspot({ id, label, position, cameraTarget, cameraPosit
         {children}
       </group>
 
-
+      {/* Floating Label */}
+      {hasEntered && (
+        <Html position={[0, 1.5, 0]} center className={`pointer-events-none transition-opacity duration-300 ${labelOpacity}`}>
+          <div className={`flex flex-col items-center gap-2 ${hovered || isActive ? 'scale-100' : 'scale-90'} transition-transform duration-300`}>
+            <div className={`glass-panel px-3 py-1.5 rounded-md text-xs font-mono whitespace-nowrap ${isFullscreenAction ? 'text-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.4)] border border-[#d4af37]/40' : 'text-neon-green shadow-[0_0_15px_rgba(57,255,136,0.2)]'}`}>
+              {label}
+            </div>
+            {/* Pulsing dot */}
+            <div className="w-4 h-4 relative flex items-center justify-center">
+              <div className={`absolute inset-0 rounded-full animate-ping ${isFullscreenAction ? 'bg-[#d4af37]/40' : 'bg-neon-green/40'}`} />
+              <div className={`w-1.5 h-1.5 rounded-full ${isFullscreenAction ? 'bg-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,1)]' : 'bg-neon-green shadow-[0_0_10px_rgba(57,255,136,1)]'}`} />
+            </div>
+          </div>
+        </Html>
+      )}
     </group>
   );
 }
